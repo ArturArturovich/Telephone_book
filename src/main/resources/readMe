@@ -1,0 +1,25 @@
+база данных
+
+таблица номеров
+CREATE TABLE public.phone_number
+(
+    id bigint NOT NULL,
+    "number" bigint NOT NULL,
+    CONSTRAINT phone_number_pkey PRIMARY KEY (id)
+)
+таблица юзеров
+CREATE TABLE public.users
+(
+    id bigint NOT NULL DEFAULT nextval('users_id_seq'::regclass),
+    name character varying(255) COLLATE pg_catalog."default",
+    phonenumberid bigint NOT NULL DEFAULT nextval('users_phonenumberid_seq'::regclass),
+    CONSTRAINT users_phonenumberid_fkey FOREIGN KEY (phonenumberid)
+        REFERENCES public.phone_number (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE
+
+        запрос на всех юзеров у которых есть номер телефона
+        SELECT users.name FROM users
+        JOIN phone_number ON phone_number.id = users.phoneNumberId;
+
+
